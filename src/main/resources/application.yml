@@ -1,0 +1,29 @@
+spring:
+  #Druid
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/phone_repair?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+#mybatis
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+## Mybatis ø™∆Ù»’÷æ
+logging:
+  level:
+    com:
+      jjy:
+        aircinema:
+          dao: debug
+    org:
+      springframework:
+        web: trace
+
+#token
+token:
+  expire-time: 3600000
+  secret: riaperenohp
