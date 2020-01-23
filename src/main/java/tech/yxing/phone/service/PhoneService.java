@@ -90,7 +90,14 @@ public class PhoneService {
      * @date 2020/1/15 16:08
      */
     public PhoneInfoDto getPhoneByPhoneId(int phoneId){
-        return phoneDao.getPhoneByPhoneId(phoneId);
+        PhoneInfoDto phoneInfoDto = phoneDao.getPhoneByPhoneId(phoneId);
+        for (Hitch hitch : phoneInfoDto.getHitches()) {
+            hitch.setHitch("{\"hitch\":\""+hitch.getHitch()+"\","+"\"price\":\""+hitch.getPrice()+"\"}");
+        }
+        for (Hitch hitch : phoneInfoDto.getHitches()) {
+            System.out.println("see:"+hitch.getHitch());
+        }
+        return phoneInfoDto;
     }
 
     /**

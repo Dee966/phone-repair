@@ -12,7 +12,7 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-## Mybatis ¿ªÆôÈÕÖ¾
+## Mybatis ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾
 logging:
   level:
     com:
@@ -25,5 +25,5 @@ logging:
 
 #token
 token:
-  expire-time: 3600000
+  expire-time: 86400000
   secret: riaperenohp

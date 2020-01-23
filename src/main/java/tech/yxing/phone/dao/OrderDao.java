@@ -2,6 +2,7 @@ package tech.yxing.phone.dao;
 
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import tech.yxing.phone.pojo.dto.OrderAndImgDto;
 import tech.yxing.phone.pojo.po.Order;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface OrderDao {
-    @Insert("insert into `order` values(null,#{name},#{telephone},#{address},#{model},#{color},#{hitch},#{remarks},#{total},0,#{userId},#{phoneId})")
+    @Insert("insert into `order` values(null,#{name},#{telephone},#{address},#{model},#{color},#{hitch},#{remarks},#{total},0,#{mode},#{userId},#{phoneId})")
     @Options(useGeneratedKeys = true,keyProperty = "orderId",keyColumn = "order_id")
     Integer addOrder(Order order);
 
@@ -26,11 +27,22 @@ public interface OrderDao {
     @Update("update `order` set state=1 where order_id=#{orderId}")
     void changePayState(int orderId);
 
-    @Select("select * from `order` where user_id=#{userId}")
-    List<Order> listOrder(int userId);
+    @Select("select * from `order` where user_id=#{userId} order by order_id desc")
+    @Results({
+            @Result(property = "phoneId", column = "phone_id"),
+            @Result(property = "img", column = "phone_id", one = @One(select = "tech.yxing.phone.dao.OrderDao.getImg"))
+    })
+    List<OrderAndImgDto> listOrder(int userId);
 
-    @Select("select * from `order` where user_id=#{userId} and state=#{state}")
-    List<Order> listStateOrder(int userId,int state);
+    @Select("select img from phone where phone_id=#{phoneId}")
+    String getImg(int phoneId);
+
+    @Select("select * from `order` where user_id=#{userId} and state=#{state} order by order_id desc")
+    @Results({
+            @Result(property = "phoneId", column = "phone_id"),
+            @Result(property = "img", column = "phone_id", one = @One(select = "tech.yxing.phone.dao.OrderDao.getImg"))
+    })
+    List<OrderAndImgDto> listStateOrder(int userId,int state);
 
     @Update("update `order` set state=2 where order_id=#{orderId}")
     void changeRepair(int orderId);
@@ -47,6 +59,10 @@ public interface OrderDao {
     @Update("update log set got_time=#{gotTime} where order_id=#{orderId}")
     void addGotTime(Date gotTime,int orderId);
 
-    @Select("select * from `order`")
-    List<Order> listAllOrder();
+    @Select("select * from `order` order by order_id desc")
+    @Results({
+            @Result(property = "phoneId", column = "phone_id"),
+            @Result(property = "img", column = "phone_id", one = @One(select = "tech.yxing.phone.dao.OrderDao.getImg"))
+    })
+    List<OrderAndImgDto> listAllOrder();
 }

@@ -1,8 +1,7 @@
-package tech.yxing.phone.pojo.po;
+package tech.yxing.phone.pojo.dto;
 
-import tech.yxing.phone.pojo.vo.OrderVo;
-
-public class Order {
+public class OrderAndImgDto {
+    private String img;
     private Integer orderId;
     private String name;
     private String telephone;
@@ -17,23 +16,10 @@ public class Order {
     private Integer userId;
     private Integer phoneId;
 
-    public Order(){}
+    public OrderAndImgDto(){}
 
-    public Order(OrderVo orderVo){
-        this.name = orderVo.getName();
-        this.telephone = orderVo.getTelephone();
-        this.address = orderVo.getAddress();
-        this.model = orderVo.getModel();
-        this.color = orderVo.getColor();
-        this.hitch = orderVo.getHitch();
-        this.remarks = orderVo.getRemarks();
-        this.total = orderVo.getTotal();
-        this.mode = orderVo.getMode();
-        this.userId = orderVo.getUserId();
-        this.phoneId = orderVo.getPhoneId();
-    }
-
-    public Order(Integer orderId, String name, String telephone, String address, String model, String color, String hitch, String remarks, Double total, Integer state, String mode, Integer userId, Integer phoneId) {
+    public OrderAndImgDto(String img, Integer orderId, String name, String telephone, String address, String model, String color, String hitch, String remarks, Double total, Integer state, String mode, Integer userId, Integer phoneId) {
+        this.img = img;
         this.orderId = orderId;
         this.name = name;
         this.telephone = telephone;
@@ -47,6 +33,14 @@ public class Order {
         this.mode = mode;
         this.userId = userId;
         this.phoneId = phoneId;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Integer getOrderId() {
@@ -155,8 +149,9 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
+        return "OrderAndImgDto{" +
+                "img='" + img + '\'' +
+                ", orderId=" + orderId +
                 ", name='" + name + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", address='" + address + '\'' +

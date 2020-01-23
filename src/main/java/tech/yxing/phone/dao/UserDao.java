@@ -27,7 +27,7 @@ public interface UserDao {
     @Select("select * from user where username=#{username}")
     User getUserByUsername(String username);
 
-    @Insert("insert into user values(null,#{username},#{password},null,null,null)")
+    @Insert("insert into user values(null,#{username},#{password},null,null,null,2000)")
     @Options(useGeneratedKeys = true,keyProperty = "userId",keyColumn = "user_id")
     Integer register(User user);
 

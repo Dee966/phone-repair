@@ -1,11 +1,15 @@
 package tech.yxing.phone.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tech.yxing.phone.pojo.po.Address;
 import tech.yxing.phone.pojo.vo.AddressVo;
 import tech.yxing.phone.pojo.dto.UserDto;
 import tech.yxing.phone.pojo.vo.UserVo;
+import tech.yxing.phone.result.CodeMsg;
 import tech.yxing.phone.result.Result;
 import tech.yxing.phone.service.UserService;
 
@@ -38,8 +42,14 @@ public class UserController {
      * @date 2020/1/14 22:53
      */
     @GetMapping("/info/{userId}")
+    @RequiresAuthentication//确保登录才能操作
     public Result<UserDto> getUser(@PathVariable int userId){
-        return Result.success(userService.getUser(userId));
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()){
+            return Result.success(userService.getUser(userId));
+        }else {
+            return Result.error(CodeMsg.NOT_LOGIN);
+        }
     }
 
     /**

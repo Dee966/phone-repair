@@ -9,12 +9,13 @@ public class OrderVo {
     private String hitch;
     private String remarks;
     private Double total;
+    private String mode;
     private Integer userId;
     private Integer phoneId;
 
     public OrderVo(){}
 
-    public OrderVo(String name, String telephone, String address, String model, String color, String hitch, String remarks, Double total, Integer userId, Integer phoneId) {
+    public OrderVo(String name, String telephone, String address, String model, String color, String hitch, String remarks, Double total, String mode, Integer userId, Integer phoneId) {
         this.name = name;
         this.telephone = telephone;
         this.address = address;
@@ -23,6 +24,7 @@ public class OrderVo {
         this.hitch = hitch;
         this.remarks = remarks;
         this.total = total;
+        this.mode = mode;
         this.userId = userId;
         this.phoneId = phoneId;
     }
@@ -91,6 +93,14 @@ public class OrderVo {
         this.total = total;
     }
 
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -118,6 +128,7 @@ public class OrderVo {
                 ", hitch='" + hitch + '\'' +
                 ", remarks='" + remarks + '\'' +
                 ", total=" + total +
+                ", mode='" + mode + '\'' +
                 ", userId=" + userId +
                 ", phoneId=" + phoneId +
                 '}';

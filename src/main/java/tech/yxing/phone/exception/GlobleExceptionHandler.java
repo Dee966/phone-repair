@@ -1,5 +1,7 @@
 package tech.yxing.phone.exception;
 
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +34,14 @@ public class GlobleExceptionHandler {
 			e.printStackTrace();
 			UnauthorizedException exception = (UnauthorizedException) e;
 			return Result.error(CodeMsg.PASSWORD_ERROR.fillArgs(exception.getMessage()));
+		} else if (e instanceof AuthorizationException){
+			e.printStackTrace();
+			AuthorizationException exception = (AuthorizationException) e;
+			return Result.error(CodeMsg.NOT_LOGIN.fillArgs(exception.getMessage()));
+		} else if (e instanceof UnauthenticatedException){
+			e.printStackTrace();
+			UnauthenticatedException exception = (UnauthenticatedException) e;
+			return Result.error(CodeMsg.NOT_LOGIN.fillArgs(exception.getMessage()));
 		} else {
 			e.printStackTrace();
 		}

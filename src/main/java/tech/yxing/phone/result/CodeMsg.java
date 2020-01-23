@@ -13,6 +13,7 @@ public class CodeMsg {
     public static CodeMsg PASSWORD_ERROR = new CodeMsg(1102, "密码错误");
     public static CodeMsg USER_EXIST = new CodeMsg(1103, "用户名已存在");
     public static CodeMsg ADDRESS_NULL = new CodeMsg(1104, "尚未添加地址");
+    public static CodeMsg NOT_LOGIN = new CodeMsg(1105, "未登录，请先进行登录");
 
     //手机模块错误码2
     public static CodeMsg SEARCH_NULL = new CodeMsg(2101, "没有搜索到任何结果");

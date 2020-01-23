@@ -10,7 +10,7 @@ import java.util.UUID;
 //@ConfigurationProperties("upload.config")
 public class MyUpload {
 
-    public static final String FILE_PATH = "D:\\work\\workspace\\phone\\src\\main\\resources\\static\\";
+    public static final String FILE_PATH = "D:\\work\\workspace\\phone-repair\\static\\img\\";
     private String path;
 
     public String getPath() {
@@ -40,14 +40,14 @@ public class MyUpload {
         picture.transferTo(file);
         String filePath = file.getCanonicalPath();
 //        String picPath = filePath.substring(filePath.indexOf("t")+1);
-//        String finalPath = filePath.substring(23);
-        return filePath;
+        String finalPath = "."+filePath.substring(30);
+        return finalPath;
     }
 
     public static void main(String[] args){
-        String file = "/usr/local/src/vhr/dist/static/1.jpg";
+        String file = "D:\\work\\workspace\\phone-repair\\static\\img\\";
         String picPath = file.substring(file.indexOf("g")+1);
-        String finalPath = file.substring(23);
+        String finalPath = "."+file.substring(30);
         System.out.println(finalPath);
     }
 }

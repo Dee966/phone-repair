@@ -82,7 +82,7 @@ public class UserService {
      */
     public UserDto getUser(int userId){
         User user = userDao.getUser(userId);
-        return new UserDto(user.getName(),user.getPassword(),user.getWechat(),user.getBalance());
+        return new UserDto(user.getName(),user.getTelephone(),user.getWechat(),user.getBalance());
     }
 
     /**

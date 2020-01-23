@@ -19,6 +19,8 @@ public class MyRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private JWTUtil jwtUtil;
 
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
@@ -49,23 +51,23 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
-//        String token = (String) auth.getCredentials();
-//        // 解密获得username，用于和数据库进行对比
-//        String username = JWTUtil.getUsername(token);
-//        if (username == null) {
-//            throw new AuthenticationException("token invalid");
-//        }
-//
-//        User user = userService.getUserByUsername(username);
-//        if (user == null) {
-//            throw new AuthenticationException();
-//        }
-//
-//        if (! JWTUtil.verify(token, username, user.getPassword())) {
-//            throw new AuthenticationException();
-//        }
-//
-//        return new SimpleAuthenticationInfo(token, token, "my_realm");
-        return null;
+        String token = (String) auth.getCredentials();
+        // 解密获得username，用于和数据库进行对比
+        String username = jwtUtil.getUsername(token);
+        if (username == null) {
+            throw new AuthenticationException("token invalid");
+        }
+
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            throw new AuthenticationException();
+        }
+
+        if (! jwtUtil.verify(token, username)) {
+            throw new AuthenticationException();
+        }
+
+        return new SimpleAuthenticationInfo(token, token, "my_realm");
+//        return null;
     }
 }

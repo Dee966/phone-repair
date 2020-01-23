@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.yxing.phone.dao.OrderDao;
 import tech.yxing.phone.exception.GlobleException;
+import tech.yxing.phone.pojo.dto.OrderAndImgDto;
 import tech.yxing.phone.pojo.po.Order;
 import tech.yxing.phone.pojo.po.User;
 import tech.yxing.phone.pojo.vo.OrderVo;
@@ -26,10 +27,12 @@ public class OrderService {
      * @author Joe
      * @date 2020/1/15 17:33
      */
-    public void addOrder(OrderVo orderVo){
+    public Order addOrder(OrderVo orderVo){
         Order order = new Order(orderVo);
         Integer num = orderDao.addOrder(order);
         orderDao.markOrderTime(new Date(),order.getOrderId());
+        return order;
+
     }
 
     /**
@@ -52,8 +55,8 @@ public class OrderService {
      * @author Joe
      * @date 2020/1/15 20:09
      */
-    public List<Order> listOrder(int userId){
-        List<Order> orders = orderDao.listOrder(userId);
+    public List<OrderAndImgDto> listOrder(int userId){
+        List<OrderAndImgDto> orders = orderDao.listOrder(userId);
         if (orders.isEmpty()){
             throw new GlobleException(CodeMsg.ORDER_NULL);
         }
@@ -68,8 +71,8 @@ public class OrderService {
      * @author Joe
      * @date 2020/1/15 20:52
      */
-    public List<Order> listStateOrder(int userId,int state){
-        List<Order> orders = orderDao.listStateOrder(userId, state);
+    public List<OrderAndImgDto> listStateOrder(int userId,int state){
+        List<OrderAndImgDto> orders = orderDao.listStateOrder(userId, state);
         if (orders.isEmpty()){
             throw new GlobleException(CodeMsg.STATE_ORDER_NULL);
         }
@@ -98,7 +101,7 @@ public class OrderService {
         }
     }
 
-    public List<Order> listAllOrder(){
+    public List<OrderAndImgDto> listAllOrder(){
         return orderDao.listAllOrder();
     }
 

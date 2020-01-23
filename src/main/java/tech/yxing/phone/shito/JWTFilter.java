@@ -3,16 +3,39 @@ package tech.yxing.phone.shito;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMethod;
+import tech.yxing.phone.config.UserContext;
+import tech.yxing.phone.exception.GlobleException;
+import tech.yxing.phone.pojo.po.User;
+import tech.yxing.phone.result.CodeMsg;
+import tech.yxing.phone.service.UserService;
+import tech.yxing.phone.utils.JWTUtil;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
 public class JWTFilter extends BasicHttpAuthenticationFilter {
+
+    @Resource
+    private UserService userService;
+
+    private static JWTFilter jwtFilter;//关键一：将自己作为静态私有变量引入，使其在springmvc初始化前被创建
+
+    @PostConstruct      //关键二：通过@PostConstruct和@PreDestroy 方法实现初始化和销毁bean之前进行的操作
+    public void init(){
+        jwtFilter = this;
+        jwtFilter.userService = this.userService;   //初始化时将已静态化的userService实例化
+    }
 
     private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
@@ -35,9 +58,21 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("Authorization");
 
+        String userStr = new JWTUtil().getUsername(authorization);
+        if (userStr == null){
+            throw new GlobleException(CodeMsg.NOT_LOGIN);
+        }
+        User user = jwtFilter.userService.getUserByUsername(userStr);//关键三：使用jwtFilter.userService的方式使用
+        System.out.println(user.toString());
+        UserContext.setUser(user);
+
         JWTToken token = new JWTToken(authorization);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
-        getSubject(request, response).login(token);
+        try {
+            getSubject(request, response).login(token);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
     }
@@ -57,7 +92,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
-                response401(request, response);
+                e.printStackTrace();
+//                response401(request, response);
             }
         }
         return true;
