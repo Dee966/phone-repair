@@ -6,6 +6,12 @@ spring:
     username: root
     password: root
 
+  servlet:
+    #上传文件大小设置
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 #mybatis
 mybatis:
   configuration:

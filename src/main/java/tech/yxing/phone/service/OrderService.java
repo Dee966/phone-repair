@@ -1,5 +1,7 @@
 package tech.yxing.phone.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tech.yxing.phone.dao.OrderDao;
@@ -8,6 +10,7 @@ import tech.yxing.phone.pojo.dto.OrderAndImgDto;
 import tech.yxing.phone.pojo.po.Order;
 import tech.yxing.phone.pojo.po.User;
 import tech.yxing.phone.pojo.vo.OrderVo;
+import tech.yxing.phone.pojo.vo.PageVo;
 import tech.yxing.phone.pojo.vo.PayVo;
 import tech.yxing.phone.pojo.vo.StateVo;
 import tech.yxing.phone.result.CodeMsg;
@@ -17,6 +20,9 @@ import java.util.List;
 
 @Service
 public class OrderService {
+
+    private static final Integer PAGE_SIZE = 5;
+
     @Autowired
     private OrderDao orderDao;
 
@@ -101,8 +107,15 @@ public class OrderService {
         }
     }
 
-    public List<OrderAndImgDto> listAllOrder(){
-        return orderDao.listAllOrder();
+    public PageInfo<OrderAndImgDto> listAllOrder(Integer page){
+        PageVo pageVo = new PageVo();
+        // 1.设置分页
+        PageHelper.startPage(page, PAGE_SIZE);
+        // 2.执行查询
+        List<OrderAndImgDto> orderAndImgDtos = orderDao.listAllOrder();
+        // 3.获取详细分页信息
+        PageInfo<OrderAndImgDto> pageInfo = new PageInfo<>(orderAndImgDtos);
+        return pageInfo;
     }
 
 }

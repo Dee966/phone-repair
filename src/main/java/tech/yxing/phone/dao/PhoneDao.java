@@ -66,4 +66,7 @@ public interface PhoneDao {
 
     @Delete("delete from hitch where phone_id=#{phoneId}")
     void deleteHitch(int phoneId);
+
+    @Insert("INSERT INTO condition_price VALUES(null,#{price},#{phoneId},#{conditionId})")
+    void addConditionPrice(@Param("price") Double price, @Param("phoneId") Integer phoneId, @Param("conditionId") Integer conditionId);
 }

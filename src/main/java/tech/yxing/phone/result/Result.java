@@ -1,8 +1,5 @@
 package tech.yxing.phone.result;
 
-
-
-
 public class Result<T> {
     private int code;
     private String msg;

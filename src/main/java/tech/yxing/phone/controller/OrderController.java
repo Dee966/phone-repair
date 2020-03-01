@@ -1,5 +1,6 @@
 package tech.yxing.phone.controller;
 
+import com.github.pagehelper.PageInfo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -110,7 +111,8 @@ public class OrderController {
      * @date 2020/1/15 9:52
      */
     @GetMapping("/all")
-    public Result<List<OrderAndImgDto>> listAllOrder() {
-        return Result.success(orderService.listAllOrder());
+    public Result<PageInfo<OrderAndImgDto>> listAllOrder(String num) {
+        Integer page = Integer.valueOf(num);
+        return Result.success(orderService.listAllOrder(page));
     }
 }
